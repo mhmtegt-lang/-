@@ -1,60 +1,102 @@
 import streamlit as st
 import random
-from datetime import date
+from datetime import date, datetime
 
-# Sayfa Konfigürasyonu
-st.set_page_config(page_title="Şeyda'ya Özel ❤️", page_icon="🌹", layout="centered")
+# 1. Sayfa Ayarları
+st.set_page_config(
+    page_title="Şeyda'ya Özel ❤️",
+    page_icon="🌹",
+    layout="centered"
+)
 
-# CSS ile biraz özelleştirme (Arka plan ve yazı tipleri)
+# 2. Şık Tasarım İçin CSS (Hata düzeltildi)
 st.markdown("""
     <style>
-    .main {
+    .stApp {
         background-color: #fff5f5;
+    }
+    .main-title {
+        color: #d32f2f;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 0;
+    }
+    .sub-text {
+        color: #5d4037;
+        text-align: center;
+        font-style: italic;
+        margin-bottom: 2rem;
+    }
+    .note-box {
+        background-color: white;
+        padding: 2rem;
+        border-radius: 15px;
+        border-left: 5px solid #ff4b4b;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        font-size: 1.2rem;
+        color: #333;
+        text-align: center;
+        margin: 2rem 0;
     }
     .stButton>button {
         width: 100%;
-        border-radius: 20px;
+        border-radius: 25px;
         background-color: #ff4b4b;
         color: white;
+        font-weight: bold;
+        border: none;
+        padding: 0.6rem;
+        transition: 0.3s;
     }
-    h1 {
-        color: #d32f2f;
-        text-align: center;
+    .stButton>button:hover {
+        background-color: #d32f2f;
+        color: white;
+        transform: scale(1.02);
     }
     </style>
-    """, unsafe_allow_status_html=True)
+    """, unsafe_allow_html=True)
 
-st.title("Günün Sürpriz Notu ✨")
+# 3. Başlık Alanı
+st.markdown('<p class="main-title">Günün Sürprizi ✨</p>', unsafe_allow_html=True)
+st.markdown('<p class="sub-text">Sadece senin için, her gün yeni bir not...</p>', unsafe_allow_html=True)
 
-# Not Listesi (Burayı dilediğin kadar doldurabilirsin)
+# 4. Mesaj Listesi (Burayı istediğin kadar uzatabilirsin)
 notlar = [
-    "Bugün harika görünüyorsun (görmeme gerek bile yok)! ❤️",
-    "Seninle tanıştığımız o günü düşünmek bile beni gülümsetiyor.",
-    "Dünyanın en şanslı insanıyım çünkü yanımda sen varsın. 🌟",
-    "Bugün kendine bir kahve ısmarla, benden sana küçük bir mola olsun.",
-    "Senin zekan ve kalbin benim için en büyük ilham kaynağı. 🥰",
-    "Hangi dert olursa olsun, beraber olduğumuz sürece her şeyi çözeriz.",
-    "Gülüşün, tüm günümü aydınlatmaya yetiyor. 🌹"
+    "Bugün harika bir gün olacak, çünkü hayatımda sen varsın Şeyda! ❤️",
+    "Gülüşün, tüm dertlerimi unutturan tek şey. 😊",
+    "Seninle geçen her an, benim için en büyük hazine. 🌟",
+    "Dünyanın en şanslı insanıyım çünkü seninle beraberim. 🥰",
+    "Zekana, kalbine ve duruşuna her gün yeniden hayran kalıyorum. 🌹",
+    "Bugün kendine çok iyi bak, çünkü benim için çok kıymetlisin. ✨",
+    "İleride kuracağımız hayaller için bugün bir adım daha yakınız. 🏠",
+    "Seninle kahve içmek bile dünyanın en huzurlu aktivitesi benim için. ☕",
+    "Her sabah seninle uyandığım bir geleceğin hayaliyle gülümsüyorum."
 ]
 
-# Her gün sadece 1 farklı not çıkması için bugünün tarihini seed olarak kullanıyoruz
+# Her gün farklı ama sabit bir not çıkması için tarihi 'seed' olarak kullanıyoruz
 random.seed(date.today().toordinal())
 gunun_notu = random.choice(notlar)
 
-# Ekran Tasarımı
-st.write("---")
-st.subheader("Merhaba Şeyda! Bugün senin için bir mesajım var:")
+# 5. Notu Göster
+st.markdown(f'<div class="note-box">{gunun_notu}</div>', unsafe_allow_html=True)
 
-st.info(gunun_notu)
-
-# İnteraktif bir buton (Havai fişek/balon efekti)
-if st.button("Bana bir sürpriz daha yap!"):
+# 6. İnteraktif Sürpriz Butonu
+if st.button("Bana Bir Sürpriz Daha Yap!"):
     st.balloons()
-    st.success("Seni çok seviyorum! ❤️")
+    st.snow()
+    st.success("Seni çok seviyorum Şeyda! ❤️")
 
-# Opsiyonel: Fotoğraf veya Şarkı Linki
+# 7. Sayacı Ekle (Örn: Tanıştığınız Tarih)
+# Buradaki tarihi kendi tanışma tarihinizle değiştirebilirsin
+tanisma_tarihi = datetime(2024, 1, 1) # Yıl, Ay, Gün şeklinde yaz
+bugun = datetime.now()
+fark = bugun - tanisma_tarihi
+
 st.write("---")
-st.write("🎵 **Günün Modu:** [Seninle En Sevdiğimiz Şarkı](https://open.spotify.com/...)") # Linki değiştir
+col1, col2, col3 = st.columns(3)
+with col2:
+    st.metric("Beraber Geçen Gün", f"{fark.days}")
 
-# İleride beraber çekildiğiniz bir fotoğrafı eklemek istersen:
-# st.image("biz.jpg", caption="Unutulmaz bir anımız.")
+st.caption("<center>Mehmet tarafından sevgiyle hazırlandı.</center>", unsafe_allow_html=True)
